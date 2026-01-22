@@ -3,10 +3,15 @@
 import { useMemo, useState } from "react";
 import { resolveMediaUrl } from "../lib/api";
 
+type AvatarSize = number | "sm" | "md" | "lg";
+
 type AvatarProps = {
+  // soporta ambos nombres para no romper componentes antiguos
   url?: string | null;
+  imageUrl?: string | null;
+
   alt?: string;
-  size?: number; // px
+  size?: AvatarSize; // px o preset
   className?: string;
   ringClassName?: string;
 };
@@ -30,16 +35,39 @@ function IncognitoIcon({ className }: { className?: string }) {
   );
 }
 
-export default function Avatar({ url, alt, size = 40, className = "", ringClassName = "" }: AvatarProps) {
+function sizeToPx(size: AvatarSize | undefined): number {
+  if (typeof size === "number") return size;
+  switch (size) {
+    case "sm":
+      return 32;
+    case "lg":
+      return 56;
+    case "md":
+    default:
+      return 40;
+  }
+}
+
+export default function Avatar({
+  url,
+  imageUrl,
+  alt,
+  size = "md",
+  className = "",
+  ringClassName = "",
+}: AvatarProps) {
   const [broken, setBroken] = useState(false);
 
+  const chosenUrl = imageUrl ?? url ?? null;
+
   const src = useMemo(() => {
-    const resolved = resolveMediaUrl(url);
+    const resolved = resolveMediaUrl(chosenUrl);
     return resolved || null;
-  }, [url]);
+  }, [chosenUrl]);
 
   const showFallback = !src || broken;
-  const dim = { width: size, height: size };
+  const px = sizeToPx(size);
+  const dim = { width: px, height: px };
 
   return (
     <div
