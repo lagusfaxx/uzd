@@ -3,21 +3,12 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import type { Notification } from "@uzeed/shared";
 
 import useMe from "../hooks/useMe";
 import { apiFetch } from "../lib/api";
 import Avatar from "./Avatar";
 import CreatePostModal from "./CreatePostModal";
-
-// Minimal type used by this component (avoid coupling to shared exports)
-type Notification = {
-  id: string;
-  title: string;
-  body: string;
-  link?: string | null;
-  readAt?: string | null;
-  createdAt?: string | null;
-};
 
 type IconName =
   | "home"
@@ -263,9 +254,7 @@ export default function Nav() {
     <>
       {/* Desktop sidebar */}
       <aside
-        className={`hidden md:flex h-screen sticky top-0 ${
-          collapsed ? "w-[88px]" : "w-[280px]"
-        } shrink-0 flex-col border-r border-white/10 bg-black/40 backdrop-blur supports-[backdrop-filter]:bg-black/30`}
+        className={`hidden md:flex h-screen sticky top-0 ${collapsed ? "w-[88px]" : "w-[280px]"} shrink-0 flex-col border-r border-white/10 bg-black/40 backdrop-blur supports-[backdrop-filter]:bg-black/30`}
       >
         <div className="flex items-center justify-between px-4 py-4">
           <Link href="/inicio" className="flex items-center gap-2" aria-label="UZEED">
@@ -332,9 +321,7 @@ export default function Nav() {
                   <div className="truncate text-sm font-semibold text-white">
                     {loading ? "Cargando…" : authed ? me?.user?.displayName || me?.user?.username : "Invitado"}
                   </div>
-                  <div className="truncate text-xs text-white/60">
-                    {authed ? `@${me?.user?.username}` : "Inicia sesión"}
-                  </div>
+                  <div className="truncate text-xs text-white/60">{authed ? `@${me?.user?.username}` : "Inicia sesión"}</div>
                 </div>
               )}
             </div>
@@ -412,7 +399,11 @@ export default function Nav() {
           </button>
 
           <Link href={profileHref} className="relative rounded-xl p-2" aria-label="Perfil">
-            {authed ? <Avatar imageUrl={me?.user?.avatarUrl || null} alt={me?.user?.username || "Perfil"} size="sm" /> : <Icon name="profile" />}
+            {authed ? (
+              <Avatar imageUrl={me?.user?.avatarUrl || null} alt={me?.user?.username || "Perfil"} size="sm" />
+            ) : (
+              <Icon name="profile" />
+            )}
           </Link>
         </div>
       </div>
@@ -443,11 +434,3 @@ function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
           <input
             autoFocus
             placeholder="Buscar creadores…"
-            className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-white/20"
-          />
-          <div className="mt-3 text-xs text-white/50">Tip: en esta versión el buscador es visual (sin resultados aún).</div>
-        </div>
-      </div>
-    </div>
-  );
-}
