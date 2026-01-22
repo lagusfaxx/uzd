@@ -434,3 +434,11 @@ function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
           <input
             autoFocus
             placeholder="Buscar creadores…"
+            className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-white/20"
+          />
+          <div className="mt-3 text-xs text-white/50">Tip: en esta versión el buscador es visual (sin resultados aún).</div>
+        </div>
+      </div>
+    </div>
+  );
+}
