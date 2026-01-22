@@ -18,7 +18,6 @@ type Notification = {
   href?: string | null;
 };
 
-
 type IconName =
   | "home"
   | "reels"
@@ -374,7 +373,7 @@ export default function Nav() {
 
       {/* Mobile bottom nav */}
       <div
-        className="md:hidden fixed left-0 right-0 z-40 border-t border-white/10 bg-black/60 backdrop-blur supports-[backdrop-filter]:bg-black/40"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-black/60 backdrop-blur supports-[backdrop-filter]:bg-black/40"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <div className="flex items-center justify-around px-3 py-2">
