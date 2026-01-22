@@ -3,12 +3,21 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import type { Notification } from "@uzeed/shared";
-
 import useMe from "../hooks/useMe";
 import { apiFetch } from "../lib/api";
 import Avatar from "./Avatar";
 import CreatePostModal from "./CreatePostModal";
+
+type Notification = {
+  id?: string | number;
+  readAt?: string | null;
+  createdAt?: string | null;
+  type?: string;
+  title?: string | null;
+  body?: string | null;
+  href?: string | null;
+};
+
 
 type IconName =
   | "home"
@@ -298,7 +307,12 @@ export default function Nav() {
 
             if (item.onClick || item.href === "#") {
               return (
-                <button key={item.label} type="button" onClick={() => item.onClick?.()} className="text-left">
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => item.onClick?.()}
+                  className="text-left"
+                >
                   {content}
                 </button>
               );
@@ -315,7 +329,11 @@ export default function Nav() {
         <div className="mt-auto px-3 pb-4">
           <div className="rounded-2xl border border-white/10 bg-black/30 p-2">
             <div className="flex items-center gap-3 px-2 py-2">
-              <Avatar imageUrl={me?.user?.avatarUrl || null} alt={me?.user?.username || "Usuario"} size="md" />
+              <Avatar
+                imageUrl={me?.user?.avatarUrl || null}
+                alt={me?.user?.username || "Usuario"}
+                size="md"
+              />
               {!collapsed && (
                 <div className="min-w-0">
                   <div className="truncate text-sm font-semibold text-white">
